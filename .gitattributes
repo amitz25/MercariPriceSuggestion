@@ -1,0 +1,4 @@
+data/raw_train.tsv filter=lfs diff=lfs merge=lfs -text
+data/test.tsv filter=lfs diff=lfs merge=lfs -text
+data/train.tsv filter=lfs diff=lfs merge=lfs -text
+data/vocab.npy filter=lfs diff=lfs merge=lfs -text

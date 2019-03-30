@@ -8,6 +8,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import csr_matrix, hstack
 
+
 MIN_NAME_DF = 1000
 MIN_DESC_DF = 1000
 
@@ -76,8 +77,10 @@ def cross_fold(X, y):
     return clf
 
 
-def train_model(X, y):
-    X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.2)
+def train_model(X, y, activations):
+    X_train, X_test, Y_train, Y_test, activations_train, activations_test = \
+        train_test_split(X, y, activations, test_size=0.2)
+
     vectorizers = {}
 
     print("Engineering features for training...")
@@ -85,6 +88,12 @@ def train_model(X, y):
 
     print("Engineering features for testing...")
     X_test_np, Y_test_np = preprocess_for_clf(X_test, Y_test, vectorizers)
+
+    activations_train = csr_matrix(activations_train).tocsc()
+    activations_test = csr_matrix(activations_test).tocsc()
+
+    X_train_np = hstack((X_train_np, activations_train))
+    X_test_np = hstack((X_test_np, activations_test))
 
     print("Data shape:", X_train_np.shape)
     clf, err = train_clf(X_train_np, Y_train_np, X_test_np, Y_test_np)
@@ -97,18 +106,22 @@ def train_model(X, y):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('input_path', type=str)
+    parser.add_argument('activations_path', type=str)
     parser.add_argument('output_path', type=str)
     parser.add_argument('--max_len', type=int, default=999999999)
-    parser.add_argument('--cross_fold', action='store_true')
     args = parser.parse_args()
 
     print("Loading train...")
     X, y = joblib.load(args.input_path)
 
-    if args.cross_fold:
-        model, vectorizers = cross_fold(X, y)
-    else:
-        model, vectorizers = train_model(X, y)
+    activations = joblib.load(args.activations_path)
+
+    data_size = activations.shape[0]
+
+    X = X[:data_size]
+    y = y[:data_size]
+
+    model, vectorizers = train_model(X, y, activations)
 
     joblib.dump((model, vectorizers), args.output_path)
 

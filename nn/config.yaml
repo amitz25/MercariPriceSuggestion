@@ -1,0 +1,31 @@
+dataset:
+  raw_path: './data/raw_train.tsv'
+  train_path: './data/train.tsv'
+  test_path: './data/test.tsv'
+  test_preprocessed_path: './data/test_preprocessed.joblib'
+  validation_path: './data/validation.tsv'
+  glove_path: './data/glove.6B.50d.txt'
+  vocab_path: './data/vocab.npy'
+train:
+  batch_size: 64
+  num_epochs: 100
+  lr_update_freq: 1
+  max_eval_iterations: 0
+  lr: 0.01
+test:
+  batch_size: 8
+rnn_encoder:
+  rnn_type: 'gru' # gru or lstm
+  bi_directional: False
+  num_layers: 1
+  hidden_size: 128
+general:
+  gpu_ids: '1' # for example '0 1'
+  output_path: 'nn/outputs'
+  logs_folder: 'logs'
+  checkpoints_folder: 'checkpoints'
+  current_iteration_file_name: 'current_iteration.txt'
+  print_logs_freq: 10000
+  eval_epcohs_freq: 1
+  save_checkpoint_freq: 50000
+  clip_grads: False

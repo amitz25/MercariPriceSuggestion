@@ -1,0 +1,15 @@
+xgb:
+RMSLE: 0.46943397815558024
+time: TODO
+
+rnn:
+RMSLE: 0.5256
+time: 114 
+
+Combined - ensemble:
+RMSLE: 0.46788812810824437
+time: SUM
+
+Combined - features:
+RMSLE: 0.47674902526723206
+time: SUM
