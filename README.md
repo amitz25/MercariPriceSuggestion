@@ -2,10 +2,10 @@
 A solution to the Mercari Price Suggestion Challenge
 
 ## Requirements
-Python >= 3.6
-PyTorch >= 1.0
-sklearn
-numpy
+- Python >= 3.6
+- PyTorch >= 1.0
+- sklearn
+- numpy
 
 ## Classical Approach
 Before training, you should run preprocess_data.py to generate the preprocessed data files (with the engineered features).
